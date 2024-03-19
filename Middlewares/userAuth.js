@@ -5,7 +5,7 @@ module.exports= verifyToken=(req,res, next)=>{
     const token=req.headers["authorization"]
     // console.log(token);
     if(!token){
-        res.status(403).json({
+         return res.status(403).json({
             error:"token not provided"
             
         })

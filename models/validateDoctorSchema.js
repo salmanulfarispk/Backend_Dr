@@ -18,5 +18,12 @@ const JOIuserShema=Joi.object({
     email: Joi.string().email().required(),
     password:Joi.string().required(),
  
-})
-module.exports = { joiDoctors,JOIuserShema }
+});
+
+const Joicategorychema=Joi.object({
+    categoryname:Joi.string().required(),
+    image: Joi.string().required(),
+});
+
+
+module.exports = { joiDoctors,JOIuserShema,Joicategorychema }

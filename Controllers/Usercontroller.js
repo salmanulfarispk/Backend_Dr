@@ -58,6 +58,8 @@ module.exports={
          })
 
          const userid=user.id;
+         const username=user.username;
+         
 
          if(!user){
             return  res.status(400).json({
@@ -89,10 +91,10 @@ module.exports={
             return res.status(200).json({
                 status:"success",
                 message:"Login succesful",
-                data:{userid,email,token}
-            })
-
-     },
+                data:{userid,email,token,username} 
+            })   
+  
+     },  
     
 
      //DoctorsByCategory
@@ -125,8 +127,8 @@ module.exports={
             try {
                 const category = req.params.categoryname;
 
-                const regex = new RegExp(category, 'i'); 
-                const matchedDoctors = await DoctorSchema.find({ category: { $regex: regex } });
+                const search = new RegExp(category, 'i'); 
+                const matchedDoctors = await DoctorSchema.find({ category: { $regex: search } });
         
 
                 if (matchedDoctors.length === 0 || matchedDoctors.length > category.length) {
@@ -151,7 +153,9 @@ module.exports={
                 });
             }
 
-        },
+        },  
+
+
 
         
 

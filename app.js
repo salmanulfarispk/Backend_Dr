@@ -14,7 +14,7 @@ const  DB= 'mongodb://localhost:27017/Doctor_Appointment';
 mongoose.connect(DB)
     .then(() => console.log('Connected to Database'))
     .catch(error => console.error('Error connecting to MongoDB:', error));
-
+ 
 
 
     app.use(express.json());
@@ -29,4 +29,4 @@ app.use("/user",userRoute)
 
 app.listen(port,()=>{
     console.log("Running..",port)
-}) 
+})  

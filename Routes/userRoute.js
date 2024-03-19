@@ -3,7 +3,7 @@ const router=express.Router()
 const userControler=require("../Controllers/Usercontroller")
 
 const TrycatchHandler=require("../Middlewares/TryCatchHandler")
-const verifyToken=require("../Middlewares/userAuth")
+const verifyToken=require("../Middlewares/userAuth") 
 
 
 

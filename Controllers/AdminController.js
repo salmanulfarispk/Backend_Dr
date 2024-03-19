@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
 const Doctorshema = require("../models/DoctorSchema");
 const {joiDoctors} = require("../models/validateDoctorSchema");
-const mongoose=require("mongoose")
+const mongoose=require("mongoose");
+const {Joicategorychema}=require("../models/validateDoctorSchema");
+const CategoryList = require("../models/CategoryList");
 
 module.exports = { 
     // Admin login
@@ -180,11 +182,38 @@ module.exports = {
             message: "Internal server error"
           });
         }
+
+      },
+
+      //CategoryList
+
+      categorylist:async(req,res)=>{
+        const {value,error}= Joicategorychema.validate(req.body)
+
+        if (error) {
+          return res.status(400).json({ error: error.details[0].message });
       }
       
+      const { categoryname, image } = value;
+      try {
+        const newCategory = await CategoryList.create({
+          categoryname, 
+          image
+        });
 
-
-
+        return res.status(201).json({
+            status: "success",
+            message: "Category created",
+            data: newCategory
+        });
+    } catch (error) {
+        return res.status(500).json({
+            status: "error",
+            message: "Internal server error"
+        });
+    }
+        
+      },
 
 
 
