@@ -3,6 +3,7 @@ const bcrypt= require("bcrypt")
 const UserSchema=require("../models/UserSchema")
 const jwt=require("jsonwebtoken")
 const DoctorSchema = require("../models/DoctorSchema")
+const categorySchema=require("../models/CategoryList")
 
 
 
@@ -128,12 +129,12 @@ module.exports={
                 const category = req.params.categoryname;
 
                 const search = new RegExp(category, 'i'); 
-                const matchedDoctors = await DoctorSchema.find({ category: { $regex: search } });
+                const matchedDoctors = await categorySchema.find({ categoryname: { $regex: search } });
         
 
                 if (matchedDoctors.length === 0 || matchedDoctors.length > category.length) {
                     return res.status(404).json({
-                        status: "error",
+                        status: "error",  
                         message: `This '${category}' not found in the category list`
                     });
                 }
@@ -155,8 +156,31 @@ module.exports={
 
         },  
 
-
-
+      //Getting CategoryList
+      Categorylist: async (req, res) => {
+        try {
+          const categoryitems = await categorySchema.find();
+          if (!categoryitems.length) {
+            return res.status(404).json({
+              status: "error",
+              message: "No category items found",
+            });
+          }
+      
+          return res.status(200).json({
+            status: "success",
+            message: "Categories retrieved successfully",
+            data: categoryitems,
+          });
+        } catch (error) {
+          return res.status(500).json({
+            status: "error",
+            message: "Internal server error",
+            error: error.message,
+          });
+        }
+      },
+      
         
 
 

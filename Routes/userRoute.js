@@ -15,10 +15,12 @@ router
 
 .use(verifyToken)
 
+.get('/categorylist',TrycatchHandler(userControler.Categorylist))
 .get("/:categoryname",TrycatchHandler(userControler.DocCategory))
-.get("/search/:categoryname",TrycatchHandler(userControler.SearchCategory))
+.get("/search/:categoryname",TrycatchHandler(userControler.SearchCategory)) 
 
 
+ 
 
 
 
