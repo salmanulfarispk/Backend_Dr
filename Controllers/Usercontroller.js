@@ -100,26 +100,32 @@ module.exports={
 
      //DoctorsByCategory
 
-     DocCategory: async(req,res)=>{
-
-        const Doccategory=req.params.categoryname;
-        const DoctorBYCategory= await DoctorSchema.findOne({category:Doccategory})
-
-        if(!DoctorBYCategory){
-            return res.status(404).json({
-                status:"error",
-                message:"Doctors not found in this Category"
-             })
-        }
-
-        return res.status(200).json({
-            status:"success",
-            message:"Doctor founded sucesfuly",
-            data: DoctorBYCategory
-         })
-
-
-     },
+     DocCategory: async (req, res) => {
+      try {
+          const Doccategory = req.params.categoryname;
+          const DoctorBYCategory = await DoctorSchema.findOne({ category: Doccategory });
+  
+          if (!DoctorBYCategory) {
+              return res.status(404).json({
+                  status: "error",
+                  message: "Doctors not found in this Category"
+              });
+          }
+  
+          return res.status(200).json({
+              status: "success",
+              message: "Doctor found successfully",
+              data: DoctorBYCategory
+          });
+      } catch (error) {
+          console.error("Error in DocCategory:", error);
+          return res.status(500).json({
+              status: "error",
+              message: "Internal server error"
+          });
+      }
+  },
+  
 
      //SearchByCategory
 
@@ -151,7 +157,7 @@ module.exports={
                 console.error(error);
                 return res.status(500).json(
                     { message: 'Server Error' 
-                });
+                }); 
             }
 
         },  
@@ -178,14 +184,55 @@ module.exports={
             message: "Internal server error",
             error: error.message,
           });
-        }
+        }     
       },
       
+       //popular Doctors
+       PopularDocts: async (req, res) => {
+        try {
+          const pipeline = [
+            {
+                $match: {
+                    experience: { $gte: 13 }
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    image: 1,
+                    category: 1,
+                    experience: 1,
+                    hospital: 1,
+                    about: 1
+                }
+            }
+        ];
+
+          
+
+            const popularDoctors = await DoctorSchema.aggregate(pipeline).exec();
+
+            return res.status(200).json({
+                status: "success",
+                message: "Popular doctors retrieved successfully",
+                data: popularDoctors
+            });
+        } catch (error) {
+            console.error("Error in PopularDocts:", error);
+            return res.status(500).json({
+                status: "error",
+                message: "Internal server error"
+            });
+        }
+    },
+
+
         
 
 
 
-
+  
 
 
 

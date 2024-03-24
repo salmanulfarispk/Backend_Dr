@@ -7,7 +7,7 @@ const mongoose=require("mongoose")
       name:String,
       image:String,
       category:String,
-      experience:String,
+      experience:Number,
       hospital:String,
       about:String,
 

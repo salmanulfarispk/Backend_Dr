@@ -7,9 +7,8 @@ const cors = require('cors');
 const adminroute=require("./Routes/adminRoute")
 const userRoute=require("./Routes/userRoute")
 
-
-app.use(cors());
-
+app.use(cors())
+ 
 const  DB= 'mongodb://localhost:27017/Doctor_Appointment';
 mongoose.connect(DB)
     .then(() => console.log('Connected to Database'))
@@ -23,8 +22,6 @@ mongoose.connect(DB)
 app.use("/admin",adminroute)
 app.use("/user",userRoute)
 
-
- 
 
 
 app.listen(port,()=>{
