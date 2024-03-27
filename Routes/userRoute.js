@@ -12,14 +12,21 @@ router
 .post("/login",TrycatchHandler(userControler.Login))
 
  
-.use(verifyToken) 
 
 .get('/categorylist', TrycatchHandler(userControler.Categorylist))
 .get("/:categoryname", TrycatchHandler(userControler.DocCategory))
 .get("/search/:categoryname", TrycatchHandler(userControler.SearchCategory))
 .get("/doctors/popularDoctors", TrycatchHandler(userControler.PopularDocts))
 
-  
+
+ .use(verifyToken) 
+ .get("/category/:Docname",TrycatchHandler(userControler.DocByname))
+ .get("/details/suggestDocs/doctor", TrycatchHandler(userControler.SuggestDocts))
+
+
+
+
+
  
   
 

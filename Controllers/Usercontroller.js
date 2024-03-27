@@ -103,7 +103,7 @@ module.exports={
      DocCategory: async (req, res) => {
       try {
           const Doccategory = req.params.categoryname;
-          const DoctorBYCategory = await DoctorSchema.findOne({ category: Doccategory });
+          const DoctorBYCategory = await DoctorSchema.find({ category: Doccategory });
   
           if (!DoctorBYCategory) {
               return res.status(404).json({
@@ -196,7 +196,7 @@ module.exports={
                     experience: { $gte: 13 }
                 }
             },
-            {
+            { 
                 $project: {
                     _id: 1,
                     name: 1,
@@ -227,10 +227,69 @@ module.exports={
         }
     },
 
-
+    DocByname: async (req, res) => {
+        try {
+            const Doctorname = req.params.Docname;
+            const DoctorBYName= await DoctorSchema.findOne({ name: Doctorname });
+    
+            if (!DoctorBYName) {
+                return res.status(404).json({
+                    status: "error",
+                    message: "Doctors not found in this Name"
+                });
+            }
+    
+            return res.status(200).json({
+                status: "success",
+                message: "Doctor found successfully",
+                data: DoctorBYName
+            });
+        } catch (error) {
+            console.error("Error in DocCategory:", error);
+            return res.status(500).json({
+                status: "error",
+                message: "Internal server error"
+            });
+        }
+    },
         
 
+    SuggestDocts: async (req, res) => {
+        try {
+          const pipeline = [
+            {
+                $match: {
+                    experience: { $gte: 15 }
+                }
+            },
+            { 
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    image: 1,
+                    category: 1,
+                    experience: 1,
+                    
+                }
+            }
+        ];
 
+
+            const suggestDoctors = await DoctorSchema.aggregate(pipeline).exec();
+
+            return res.status(200).json({
+                status: "success",
+                message: "suggseted doctors retrieved successfully",
+                data: suggestDoctors
+            });
+        } catch (error) {
+            console.error("Error in suggestion doctors:", error);
+            return res.status(500).json({
+                status: "error",
+                message: "Internal server error"
+            });
+        }
+    },
 
   
 
